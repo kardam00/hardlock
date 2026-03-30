@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HardLock Password</title>
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            margin-top: 100px;
+        }
+        #password {
+            font-size: 40px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Today's Password</h1>
+<div id="password"></div>
+
+<script>
+function isMobile() {
+    return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+}
+
+if (isMobile()) {
+    document.body.innerHTML = "<h2>Access Denied</h2>";
+} else {
+    const today = new Date().toISOString().split('T')[0];
+
+    // Simple deterministic password
+    const password = btoa(today).substring(0, 6);
+
+    document.getElementById("password").innerText = password;
+}
+</script>
+
+</body>
+</html>

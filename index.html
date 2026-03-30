@@ -16,7 +16,6 @@
 </head>
 <body>
 
-<h1>Today's Password</h1>
 <div id="password"></div>
 
 <script>
@@ -24,17 +23,40 @@ function isMobile() {
     return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 }
 
+// Deterministic hash function
+function hashCode(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+        hash = (hash << 5) - hash + str.charCodeAt(i);
+        hash |= 0;
+    }
+    return Math.abs(hash);
+}
+
+// Generate strong password
+function generatePassword(seed) {
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+";
+    let password = "";
+
+    let num = hashCode(seed);
+
+    for (let i = 0; i < 16; i++) {
+        num = (num * 9301 + 49297) % 233280;
+        const index = num % chars.length;
+        password += chars.charAt(index);
+    }
+
+    return password;
+}
+
 if (isMobile()) {
     document.body.innerHTML = "<h2>Access Denied</h2>";
 } else {
     const today = new Date().toISOString().split('T')[0];
-
-    // Simple deterministic password
-    const password = btoa(today).substring(0, 6);
+    const password = generatePassword(today);
 
     document.getElementById("password").innerText = password;
 }
 </script>
-
 </body>
 </html>

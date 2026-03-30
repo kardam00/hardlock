@@ -49,12 +49,12 @@ function generatePassword(seed) {
     return password;
 }
 
+const today = new Date().toISOString().split('T')[0];
+const password = generatePassword(today);
+
 if (isMobile()) {
     document.body.innerHTML = "<h2>Access Denied</h2>";
 } else {
-    const today = new Date().toISOString().split('T')[0];
-    const password = generatePassword(today);
-
     document.getElementById("password").innerText = password;
 }
 </script>
